@@ -26,6 +26,11 @@ describe Airport do
         expect(new_airport.capacity).to eq 30
     end
 
+    it "should have a default capacity if none is set when a new airport is created" do
+        new_airport = Airport.new
+        expect(new_airport.capacity).to eq Airport::DEFAULT_CAPACITY
+    end
+
     it "should allow a plane to take off" do
         3.times { subject.land(Plane.new) }
         subject.take_off
