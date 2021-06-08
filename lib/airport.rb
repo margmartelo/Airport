@@ -6,6 +6,7 @@ class Airport
     def initialize(capacity=DEFAULT_CAPACITY)
         @planes = []
         @capacity = capacity
+       
     end
 
     def land(plane)
@@ -14,6 +15,14 @@ class Airport
     end
 
     def take_off
+        fail "Due to stormy weather, it is not possible to take off." if stormy?
         @planes.pop
+    end
+
+    def stormy?
+        number = rand(1..5)
+        if number == 5
+            true
+        end
     end
 end

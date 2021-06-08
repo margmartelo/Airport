@@ -1,10 +1,11 @@
-#As the system designer
-#So that the software can be used for many different airports
-#I would like a default airport capacity that can be overridden as appropriate
 
+#As an air traffic controller 
+#To ensure safety 
+#I want to prevent takeoff when weather is stormy 
 
 require 'airport'
 require 'plane'
+
 
 describe Airport do
     it "should allow landing" do
@@ -31,12 +32,17 @@ describe Airport do
         expect(new_airport.capacity).to eq Airport::DEFAULT_CAPACITY
     end
 
-    it "should allow a plane to take off" do
+    it "should allow a plane to take off if weather isn't stormy" do
+        allow(subject).to receive(:stormy?).and_return(false)
         3.times { subject.land(Plane.new) }
         subject.take_off
         expect(subject.planes.length).to eq 2
     end
 
+    it "shouldn't take off if weather is stormy" do
+        allow(subject).to receive(:stormy?).and_return(true)
+        expect { subject.take_off }.to raise_error("Due to stormy weather, it is not possible to take off.")
+    end
 end
 
 
