@@ -10,6 +10,7 @@ class Airport
     end
 
     def land(plane)
+        fail "Due to stormy weather, it is not possible to land at the airport." if stormy?
         fail "Landing is not possible: airport at full capacity." if @planes.length == @capacity
         @planes.push(plane)
     end

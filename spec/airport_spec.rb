@@ -1,7 +1,6 @@
-
 #As an air traffic controller 
 #To ensure safety 
-#I want to prevent takeoff when weather is stormy 
+#I want to prevent landing when weather is storm
 
 require 'airport'
 require 'plane'
@@ -13,14 +12,22 @@ describe Airport do
     end
 
     it "should allow a plane to land" do
+        allow(subject).to receive(:stormy?).and_return(false)
         subject.land(Plane.new)
         expect(subject.planes.length).to eq 1
     end
 
     it "should raise an error if trying to land at the airport with full capacity reached" do
+        allow(subject).to receive(:stormy?).and_return(false)
         subject.capacity.times { subject.land(Plane.new) }
         expect { subject.land(Plane.new) }.to raise_error("Landing is not possible: airport at full capacity.")
     end
+
+    it "should raise an error if trying to land when stormy weather" do
+        allow(subject).to receive(:stormy?).and_return(true)
+        expect { subject.land(Plane.new) }.to raise_error("Due to stormy weather, it is not possible to land at the airport.")
+    end
+
 
     it "should allow to set the capacity of an airport" do
         new_airport = Airport.new(30)
