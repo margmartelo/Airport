@@ -3,9 +3,10 @@ class Airport
     attr_reader :planes, :capacity
     DEFAULT_CAPACITY = 20
 
-    def initialize(capacity=DEFAULT_CAPACITY)
-        @planes = []
+    def initialize(weather, capacity=DEFAULT_CAPACITY)
+        @weather = weather.weather_status
         @capacity = capacity
+        @planes = []
        
     end
 
@@ -20,10 +21,10 @@ class Airport
         @planes.pop
     end
 
+    private
+
     def stormy?
-        number = rand(1..5)
-        if number == 5
-            true
-        end
-    end
+        @weather == "stormy"
+    end 
+
 end

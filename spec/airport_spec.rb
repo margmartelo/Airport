@@ -3,32 +3,36 @@
 #I want to prevent landing when weather is storm
 
 require 'airport'
+require 'weather'
 
 describe Airport do
+    subject(:airport) { described_class.new(weather, 20) }
     let(:plane) { double :plane }
+    let(:weather) { double :weather }
+
     describe "#land" do
         context "when not stormy" do
             before do 
-                allow(subject).to receive(:stormy?).and_return(false)
+                allow(weather).to receive(:weather_status).and_return("good")
             end
 
             it "should allow a plane to land" do
-                subject.land(plane)
-                expect(subject.planes.length).to eq 1
+                airport.land(plane)
+                expect(airport.planes.length).to eq 1
             end
 
             context "when full capacity reached" do
                 it "should raise an error if trying to land " do
-                    subject.capacity.times { subject.land(plane) }
-                    expect { subject.land(plane) }.to raise_error("Landing is not possible: airport at full capacity.")
+                    airport.capacity.times { airport.land(plane) }
+                    expect { airport.land(plane) }.to raise_error("Landing is not possible: airport at full capacity.")
                 end
             end
         end
 
         context "when stormy" do
             it "should raise an error if trying to land" do
-                allow(subject).to receive(:stormy?).and_return(true)
-                expect { subject.land(plane) }.to raise_error("Due to stormy weather, it is not possible to land at the airport.")
+                allow(weather).to receive(:weather_status).and_return("stormy")
+                expect { airport.land(plane) }.to raise_error("Due to stormy weather, it is not possible to land at the airport.")
             end
         end
     end
@@ -36,28 +40,30 @@ describe Airport do
     describe "#take_off" do 
         context "when not stormy" do
             it "should allow a plane to take off" do
-                allow(subject).to receive(:stormy?).and_return(false)
-                3.times { subject.land(plane) }
-                subject.take_off
-                expect(subject.planes.length).to eq 2
+                allow(weather).to receive(:weather_status).and_return("good")
+                3.times { airport.land(plane) }
+                airport.take_off
+                expect(airport.planes.length).to eq 2
             end
         end
         
         context "when stormy" do
             it "shouldn't allow to take off" do
-                allow(subject).to receive(:stormy?).and_return(true)
-                expect { subject.take_off }.to raise_error("Due to stormy weather, it is not possible to take off.")
+                allow(weather).to receive(:weather_status).and_return("stormy")
+                expect { airport.take_off }.to raise_error("Due to stormy weather, it is not possible to take off.")
             end
         end
     end
 
     it "should allow to set the capacity of an airport" do
-        new_airport = Airport.new(30)
+        allow(weather).to receive(:weather_status).and_return("good")
+        new_airport = Airport.new(weather, 30)
         expect(new_airport.capacity).to eq 30
     end
 
     it "should have a default capacity if none is set when a new airport is created" do
-        new_airport = Airport.new
+        allow(weather).to receive(:weather_status).and_return("good")
+        new_airport = Airport.new(weather)
         expect(new_airport.capacity).to eq Airport::DEFAULT_CAPACITY
     end
 
