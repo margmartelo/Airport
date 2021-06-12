@@ -16,8 +16,9 @@ class Airport
         @planes.push(plane)
     end
 
-    def take_off
+    def take_off(plane)
         fail "Due to stormy weather, it is not possible to take off." if stormy?
+        fail "This plane is currently not at this airport." unless @planes.include?(plane)
         @planes.pop
     end
 
