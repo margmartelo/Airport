@@ -53,7 +53,7 @@ I want to ensure planes can only take off from airports they are in
 ## 🛩️ **Class Diagram that supports our User Stories implementation:** 
 <p>&nbsp;</p>
 
-<img width="648" alt="ClassDiagramAirport" src="https://user-images.githubusercontent.com/65411964/121790979-e7f88680-cbdc-11eb-91cf-4ecf0915e136.png">
+<img width="865" alt="Screenshot 2021-06-14 at 16 06 43" src="https://user-images.githubusercontent.com/65411964/121914883-96f6a880-cd2a-11eb-8112-4ceb7a0db1b0.png">
 
 <p>&nbsp;</p>
 
